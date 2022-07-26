@@ -1,0 +1,15 @@
+* {
+    font-family: "JetBrains Mono", monospace;
+}
+
+body {
+    background-color: #282a36;
+}
+
+h1 {
+    color: #50fa7b;
+}
+
+h2 {
+    color: #ff79c6;
+}
