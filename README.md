@@ -1,2 +1,2 @@
-# jsonflix
+# JSONFlix
 Your Netflix API
