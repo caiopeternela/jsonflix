@@ -1,0 +1,2 @@
+pip-tools==6.8.0
+django-on-heroku==1.1.2
