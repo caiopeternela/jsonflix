@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class Netflix(models.Model):
     show_id = models.CharField(max_length=36, unique=True, primary_key=True)
     type = models.CharField(max_length=36)
@@ -14,48 +15,38 @@ class Netflix(models.Model):
     genres = models.CharField(max_length=512)
     description = models.TextField()
 
-
     @property
     def search_type(self):
         return self.type.lower()
-
 
     @property
     def search_title(self):
         return self.title.lower()
 
-    
     @property
     def search_director(self):
         return self.director.lower()
-
 
     @property
     def search_cast(self):
         return self.cast.lower()
 
-    
     @property
     def search_country(self):
         return self.country.lower()
 
-    
     @property
     def search_date_added(self):
         return self.date_added.lower()
 
-    
     @property
     def search_duration(self):
         return self.duration.lower()
 
-    
     @property
     def search_genres(self):
         return self.genres.lower()
 
-    
     @property
     def search_description(self):
         return self.description.lower()
-    
