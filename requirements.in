@@ -1,0 +1,6 @@
+Django 
+gunicorn
+mypy
+psycopg2
+python-dotenv
+django-on-heroku

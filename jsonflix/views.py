@@ -20,6 +20,8 @@ def api(request):
 
     qs = Netflix.objects.all()
     if type:
+        for show in qs:
+            show.type = show.type.lower()
         qs = qs.filter(type__contains=type)
 
     if title:
