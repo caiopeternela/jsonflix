@@ -1,6 +1,4 @@
 from django.db import models
-from typing import Any
-
 
 class Netflix(models.Model):
     show_id = models.CharField(max_length=36, unique=True, primary_key=True)
