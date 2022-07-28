@@ -3,6 +3,9 @@ from .models import Netflix
 from django.http import HttpResponse
 from .scripts.date_formatter import date_formatter
 import json
+import this
+
+a = this
 
 
 def home(request):
