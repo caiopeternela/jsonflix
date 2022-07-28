@@ -4,3 +4,4 @@ pytest-django
 pip-tools
 flake8
 django-debug-toolbar
+django-extensions

@@ -1,4 +1,4 @@
-Django 
+Django==4.0.5
 gunicorn
 mypy
 psycopg2
