@@ -16,8 +16,8 @@ def api(request):
 
     type = request.GET.get("type")
     title = request.GET.get("title")
-    date_added = request.GET.get("date_added")
-
+    start_date = request.GET.get("start_date")
+    end_date = request.GET.get("end_date")
     qs = Netflix.objects.all()
     if type:
         for show in qs:
@@ -27,9 +27,15 @@ def api(request):
     if title:
         qs = qs.filter(title__contains=title)
 
-    if date_added:
-        date = date_formatter(date_added)
+    if start_date and not end_date:
+        date = date_formatter(start_date)
         qs = qs.filter(date_added__contains=date)
+
+    elif start_date and end_date:
+
+        start_date = date_formatter(start_date)
+        end_date = date_formatter(end_date)
+        qs = qs.filter(date_added__range=(start_date, end_date))
 
     dict = [
         {
