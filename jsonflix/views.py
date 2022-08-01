@@ -1,3 +1,4 @@
+from ctypes import cast
 from django.shortcuts import render
 from .models import Netflix 
 from django.http import HttpResponse
@@ -17,11 +18,15 @@ def api(request):
 
     type = request.GET.get("type")
     title = request.GET.get("title")
+    cast = request.GET.get("cast")
     start_date = request.GET.get("start_date")
     end_date = request.GET.get("end_date")
     release_year = request.GET.get("release_year")
-    limit = int(request.GET.get("limit"))
+    limit = request.GET.get("limit")
+    if limit:
+        limit = int(request.GET.get("limit"))
     qs = Netflix.objects.all()[:limit]
+    
 
     if type:
         for show in qs:
@@ -40,6 +45,11 @@ def api(request):
     if release_year:
         qs = qs.filter(release_year__gt=release_year).order_by('id')
 
+    if cast:
+        cast = cast.split(',')
+        for actor in cast:
+            qs = qs.filter(cast__contains=actor).order_by('id')
+        i = 0
     dict = [
         {
          "id": content.id,
