@@ -8,7 +8,7 @@ class Netflix(models.Model):
     director = models.CharField(max_length=512, null=True, blank=True)
     cast = models.TextField()
     country = models.CharField(max_length=512)
-    date_added = models.CharField(max_length=36)
+    date_added = models.DateTimeField(max_length=36)
     release_year = models.CharField(max_length=36)
     rating = models.CharField(max_length=36)
     duration = models.CharField(max_length=64)
