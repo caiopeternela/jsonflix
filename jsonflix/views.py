@@ -1,13 +1,9 @@
-from ctypes import cast
-from django.shortcuts import render
-from .models import Netflix 
-from django.http import HttpResponse
-from .scripts.date_formatter import date_formatter
-from datetime import datetime
 import json
-import this
 
-a = this
+from django.http import HttpResponse
+from django.shortcuts import render
+
+from .models import Netflix
 
 
 def home(request):
@@ -26,7 +22,6 @@ def api(request):
     if limit:
         limit = int(request.GET.get("limit"))
     qs = Netflix.objects.all()[:limit]
-    
 
     if type:
         for show in qs:
@@ -48,23 +43,22 @@ def api(request):
     if cast:
         cast = cast.split(' ')
         for actor in cast:
-            actor =  actor.replace('_',' ')
+            actor = actor.replace('_', ' ')
             qs = qs.filter(cast__contains=actor).order_by('id')
-        i = 0
     dict = [
         {
-         "id": content.id,
-         "type": content.type,
-         "title": content.title,
-         "director": content.director,
-         "cast": content.cast,
-         "country": content.country,
-         "date_added": str(content.date_added),
-         "release_year": content.release_year,
-         "rating": content.rating,
-         "duration": content.duration,
-         "genres": content.genres,
-         "description": content.description,
+            "id": content.id,
+            "type": content.type,
+            "title": content.title,
+            "director": content.director,
+            "cast": content.cast,
+            "country": content.country,
+            "date_added": str(content.date_added),
+            "release_year": content.release_year,
+            "rating": content.rating,
+            "duration": content.duration,
+            "genres": content.genres,
+            "description": content.description,
         }
         for content in qs
     ]
