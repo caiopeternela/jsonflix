@@ -46,8 +46,9 @@ def api(request):
         qs = qs.filter(release_year__gt=release_year).order_by('id')
 
     if cast:
-        cast = cast.split(',')
+        cast = cast.split(' ')
         for actor in cast:
+            actor =  actor.replace('_',' ')
             qs = qs.filter(cast__contains=actor).order_by('id')
         i = 0
     dict = [
