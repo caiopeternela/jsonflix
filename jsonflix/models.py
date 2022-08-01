@@ -14,5 +14,3 @@ class Netflix(models.Model):
     duration = models.CharField(max_length=64)
     genres = models.CharField(max_length=512)
     description = models.TextField()
-
-

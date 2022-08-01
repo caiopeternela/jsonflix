@@ -17,10 +17,12 @@ def api(request):
 
     type = request.GET.get("type")
     title = request.GET.get("title")
-    start_date = datetime.strptime(request.GET.get("start_date"), '%Y-%m-%d')
+    start_date = request.GET.get("start_date")
     end_date = request.GET.get("end_date")
     release_year = request.GET.get("release_year")
-    qs = Netflix.objects.all()
+    limit = int(request.GET.get("limit"))
+    qs = Netflix.objects.all()[:limit]
+
     if type:
         for show in qs:
             show.type = show.type.lower()
