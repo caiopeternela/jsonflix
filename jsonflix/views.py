@@ -2,6 +2,7 @@ from django.shortcuts import render
 from .models import Netflix 
 from django.http import HttpResponse
 from .scripts.date_formatter import date_formatter
+from datetime import datetime
 import json
 import this
 
@@ -16,7 +17,7 @@ def api(request):
 
     type = request.GET.get("type")
     title = request.GET.get("title")
-    start_date = request.GET.get("start_date")
+    start_date = datetime.strptime(request.GET.get("start_date"), '%Y-%m-%d')
     end_date = request.GET.get("end_date")
     release_year = request.GET.get("release_year")
     qs = Netflix.objects.all()
@@ -29,14 +30,10 @@ def api(request):
         qs = qs.filter(title__contains=title).order_by('id')
 
     if start_date and not end_date:
-        date = date_formatter(start_date)
-        qs = qs.filter(date_added__contains=date).order_by('id')
+        qs = qs.filter(date_added=start_date).order_by('id')
 
     elif start_date and end_date:
-
-        start_date = date_formatter(start_date)
-        end_date = date_formatter(end_date)
-        qs = qs.filter(date_added__range=(start_date)).order_by('id')
+        qs = qs.filter(date_added__range=(start_date, end_date)).order_by('date_added')
 
     if release_year:
         qs = qs.filter(release_year__gt=release_year).order_by('id')
@@ -49,7 +46,7 @@ def api(request):
          "director": content.director,
          "cast": content.cast,
          "country": content.country,
-         "date_added": content.date_added,
+         "date_added": str(content.date_added),
          "release_year": content.release_year,
          "rating": content.rating,
          "duration": content.duration,
