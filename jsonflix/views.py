@@ -15,13 +15,13 @@ def api(request):
     type = request.GET.get("type")
     title = request.GET.get("title")
     cast = request.GET.get("cast")
+    country = request.GET.get("country")
+    genres = request.GET.get("genres")
     start_date = request.GET.get("start_date")
     end_date = request.GET.get("end_date")
     release_year = request.GET.get("release_year")
     limit = request.GET.get("limit")
-    if limit:
-        limit = int(request.GET.get("limit"))
-    qs = Netflix.objects.all()[:limit]
+    qs = Netflix.objects.all()
 
     if type:
         for show in qs:
@@ -30,6 +30,9 @@ def api(request):
 
     if title:
         qs = qs.filter(title__contains=title).order_by('id')
+
+    if country:
+        qs = qs.filter(country__contains=country).order_by('id')
 
     if start_date and not end_date:
         qs = qs.filter(date_added=start_date).order_by('id')
@@ -45,6 +48,17 @@ def api(request):
         for actor in cast:
             actor = actor.replace('_', ' ')
             qs = qs.filter(cast__contains=actor).order_by('id')
+
+    if genres:
+        genres = genres.split(' ')
+        for genre in genres:
+            genre = genre.replace('_', ' ')
+            qs = qs.filter(genres__contains=genre).order_by('id')
+
+    if limit:
+        limit = int(request.GET.get("limit"))
+    qs = qs[:limit]
+
     dict = [
         {
             "id": content.id,
