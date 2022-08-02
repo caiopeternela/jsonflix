@@ -14,3 +14,19 @@ class Netflix(models.Model):
     duration = models.CharField(max_length=64)
     genres = models.CharField(max_length=512)
     description = models.TextField()
+
+    def json_dict(self):
+        return {
+            "id": self.id,
+            "type": self.type,
+            "title": self.title,
+            "director": self.director,
+            "cast": self.cast,
+            "country": self.country,
+            "date_added": str(self.date_added),
+            "release_year": self.release_year,
+            "rating": self.rating,
+            "duration": self.duration,
+            "genres": self.genres,
+            "description": self.description,
+        }

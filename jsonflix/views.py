@@ -1,4 +1,5 @@
 import json
+import re
 
 from django.http import HttpResponse
 from django.shortcuts import render
@@ -20,6 +21,7 @@ def api(request):
     start_date = request.GET.get("start_date")
     end_date = request.GET.get("end_date")
     release_year = request.GET.get("release_year")
+    description = request.GET.get("description")
     limit = request.GET.get("limit")
     qs = Netflix.objects.all()
 
@@ -44,36 +46,32 @@ def api(request):
         qs = qs.filter(release_year__gt=release_year).order_by('id')
 
     if cast:
-        cast = cast.split(' ')
+        cast = cast.split('+')
         for actor in cast:
             actor = actor.replace('_', ' ')
             qs = qs.filter(cast__contains=actor).order_by('id')
 
     if genres:
-        genres = genres.split(' ')
+        genres = genres.split('+')
         for genre in genres:
             genre = genre.replace('_', ' ')
             qs = qs.filter(genres__contains=genre).order_by('id')
+
+    if description:
+        description = set(description.split(','))
+        qss = qs
+        desc = []
+        for show in qss:
+            ds = show.description
+            ds = set(re.findall(r"[\w']+", ds))
+            if description.issubset(ds):
+                desc.append(show.id)
+        qs = qs.filter(id__in=desc)
 
     if limit:
         limit = int(request.GET.get("limit"))
     qs = qs[:limit]
 
-    dict = [
-        {
-            "id": content.id,
-            "type": content.type,
-            "title": content.title,
-            "director": content.director,
-            "cast": content.cast,
-            "country": content.country,
-            "date_added": str(content.date_added),
-            "release_year": content.release_year,
-            "rating": content.rating,
-            "duration": content.duration,
-            "genres": content.genres,
-            "description": content.description,
-        }
-        for content in qs
-    ]
+    dict = [Netflix.json_dict(content) for content in qs]
+
     return HttpResponse(json.dumps(dict, ensure_ascii=False, indent=2), content_type="application/json")
