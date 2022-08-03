@@ -28,13 +28,13 @@ def api(request):
     if type:
         for show in qs:
             show.type = show.type.lower()
-        qs = qs.filter(type__contains=type).order_by('id')
+        qs = qs.filter(type__icontains=type).order_by('id')
 
     if title:
-        qs = qs.filter(title__contains=title).order_by('id')
+        qs = qs.filter(title__icontains=title).order_by('id')
 
     if country:
-        qs = qs.filter(country__contains=country).order_by('id')
+        qs = qs.filter(country__icontains=country).order_by('id')
 
     if start_date and not end_date:
         qs = qs.filter(date_added=start_date).order_by('id')
@@ -49,17 +49,18 @@ def api(request):
         cast = cast.split('+')
         for actor in cast:
             actor = actor.replace('_', ' ')
-            qs = qs.filter(cast__contains=actor).order_by('id')
+            qs = qs.filter(cast__icontains=actor).order_by('id')
 
     if genres:
-        genres = genres.split('+')
+        genres = genres.split(',')
         for genre in genres:
             genre = genre.replace('_', ' ')
-            qs = qs.filter(genres__contains=genre).order_by('id')
+            qs = qs.filter(genres__icontains=genre).order_by('id')
 
     if description:
         description = set(description.split(','))
         qss = qs
+
         desc = []
         for show in qss:
             ds = show.description
