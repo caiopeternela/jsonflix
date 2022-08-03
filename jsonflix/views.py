@@ -59,10 +59,9 @@ def api(request):
 
     if description:
         description = set(description.split(','))
-        qss = qs
 
         desc = []
-        for show in qss:
+        for show in qs:
             ds = show.description
             ds = set(re.findall(r"[\w']+", ds))
             if description.issubset(ds):
