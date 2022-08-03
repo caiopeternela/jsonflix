@@ -6,3 +6,4 @@ flake8
 django-debug-toolbar
 django-extensions
 autopep8
+pytest-cov
