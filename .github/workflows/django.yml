@@ -22,3 +22,6 @@ jobs:
     - name: Application tests with Pytest
       run: |
         pytest jsonflix --cov=jsonflix
+    - name: Report coverage to codecov
+      - uses: actions/checkout@master
+      - uses: codecov/codecov-action@v3
