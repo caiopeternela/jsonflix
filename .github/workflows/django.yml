@@ -18,4 +18,4 @@ jobs:
         pip install -r requirements-dev.txt
     - name: Application tests with Pytest
       run: |
-        pytest jsonflix --cov=jsonflix
+        pytest
