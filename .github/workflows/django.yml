@@ -16,12 +16,11 @@ jobs:
     - name: Install dependencies
       run: |
         pip install -r requirements-dev.txt
-    # - name: Lint with Flake8
-    #   run: |
-    #     flake8
+    - name: Lint with Flake8
+      run: |
+        flake8
     - name: Application tests with Pytest
       run: |
-        pytest jsonflix --doctest-modules --junitxml=junit/test-results.xml --cov=com --cov-report=xml --cov-report=html
-    - name: Report coverage to codecov
-      uses: codecov/codecov-action@v3
-
+        pytest jsonflix --cov=jsonflix
+    # - name: Report coverage to codecov
+    #   uses: codecov/codecov-action@v3
