@@ -15,7 +15,7 @@ jobs:
         python-version: 3.9
     - name: Install dependencies
       run: |
-        pip install -r requirements-dev.txt codecov
+        pip install -r requirements-dev.txt
     - name: Lint with Flake8
       run: |
         flake8
@@ -24,4 +24,3 @@ jobs:
         pytest jsonflix --cov=jsonflix
     - name: Report coverage to codecov
       uses: codecov/codecov-action@v3
-
