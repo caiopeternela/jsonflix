@@ -21,7 +21,7 @@ jobs:
     #     flake8
     - name: Application tests with Pytest
       run: |
-        pytest jsonflix --cov=jsonflix
+        pytest
     - name: Report coverage to codecov
       uses: codecov/codecov-action@v3
 
