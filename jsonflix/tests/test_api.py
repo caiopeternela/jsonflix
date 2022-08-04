@@ -1,11 +1,5 @@
-import pytest
 from django.urls import reverse
 from jsonflix.models import Netflix
-
-
-@pytest.fixture
-def user():
-    pass
 
 
 def test_shows_list(client, db):
