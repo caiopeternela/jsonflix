@@ -3,7 +3,7 @@ import re
 
 from django.http import HttpResponse
 from django.shortcuts import render
-
+from jsonflix.scripts.scripts import country_code_converter
 from .models import Netflix
 
 
@@ -34,6 +34,8 @@ def api(request):
         qs = qs.filter(title__icontains=title).order_by('id')
 
     if country:
+        if len(country) <= 3:
+            country = country_code_converter(country)
         qs = qs.filter(country__icontains=country).order_by('id')
 
     if start_date and not end_date:
