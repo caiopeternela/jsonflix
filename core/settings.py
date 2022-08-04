@@ -1,7 +1,9 @@
-from pathlib import Path
 import os
+from pathlib import Path
+
 import django_on_heroku
 from dotenv import load_dotenv
+
 load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -87,6 +89,9 @@ DATABASES = {
         'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
         'HOST': os.getenv('POSTGRES_HOST'),
         'PORT': os.getenv('POSTGRES_PORT'),
+        'TEST': {
+            'NAME': 'mytestdatabase',
+        },
     }
 }
 
