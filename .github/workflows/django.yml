@@ -16,6 +16,9 @@ jobs:
     - name: Install dependencies
       run: |
         pip install -r requirements-dev.txt
+    - name: Docker container
+      run: |
+        docker-compose up -d
     - name: Application tests with Pytest
       run: |
         pytest
