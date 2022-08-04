@@ -25,5 +25,5 @@ jobs:
     on success:
       - name: Report coverage to codecov
       run: |
-        codecov
+        pytest jsonflix --cov=jsonflix
 
