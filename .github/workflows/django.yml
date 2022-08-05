@@ -26,6 +26,9 @@ jobs:
     - name: Install dependencies
       run: |
         pip install -r requirements-dev.txt
+    - name: Copiando arquivo de configuração
+      run: |
+        cp contrib/.env-sample .env
     - name: Application tests with Pytest
       run: |
         pytest
