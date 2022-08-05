@@ -14,7 +14,7 @@ jobs:
           POSTGRES_DB: db_cursos
           POSTGRES_USER: cursos
           POSTGRES_PASSWORD: cursospwd
-          POSTGRES_HOST: localhost
+          POSTGRES_HOST: 127.0.0.1
           POSTGRES_PORT: 5432
         ports: [ '5432:5432' ]
     steps:
