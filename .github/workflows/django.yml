@@ -5,20 +5,6 @@ on:
   pull_request:
 
 jobs:
-  create-envfile:
-    runs-on: ubuntu-18.04
-    steps:
-    - name: Make envfile
-      uses: SpicyPizza/create-envfile@v1
-      with:
-        envkey_DEBUG: false
-        envkey_SECRET_KEY: ${{ secrets.SECRET_KEY }}
-        envkey_POSTGRES_DB: netflix
-        envkey_POSTGRES_USER: postgres
-        envkey_POSTGRES_PASSWORD: postgres
-        envkey_POSTGRES_HOST: localhost
-        env_key_POSTGRES_PORT: 5432
-        file_name: .env
   build:
     runs-on: ubuntu-latest
     steps:
@@ -27,6 +13,17 @@ jobs:
       uses: actions/setup-python@v1
       with:
         python-version: 3.9
+    - name: 'Create env file'
+        run: |
+          touch .env
+          echo DEBUG=True >> .env
+          echo SECRET_KEY="[Fa?7Gutf^NuL9C'j3a#},f%]x2d@u" >> .env
+          echo POSTGRES_DB=netflix >> .env
+          echo POSTGRES_USER=postgres >> .env
+          echo POSTGRES_PASSWORD=postgres >> .env
+          echo POSTGRES_HOST=localhost >> .env
+          echo POSTGRES_PORT=5432 >> .env
+          cat .env
     - name: Install dependencies
       run: |
         pip install -r requirements-dev.txt
