@@ -16,6 +16,7 @@ class Netflix(models.Model):
     description = models.TextField()
 
     def json_dict(self):
+        self._meta.get_field('id').attname
         return {
             "id": self.id,
             "type": self.type,
