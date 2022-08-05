@@ -5,6 +5,16 @@ on:
   pull_request:
 
 jobs:
+  create-envfile:
+    runs-on: ubuntu-18.04
+    steps:
+    - name: Make envfile
+      uses: SpicyPizza/create-envfile@v1
+      with:
+        envkey_DEBUG: false
+        envkey_SOME_API_KEY: "123456abcdef"
+        envkey_SECRET_KEY: ${{ secrets.SECRET_KEY }}
+        file_name: .env
   build:
     runs-on: ubuntu-latest
     steps:
@@ -16,9 +26,6 @@ jobs:
     - name: Install dependencies
       run: |
         pip install -r requirements-dev.txt
-    - name: Docker container
-      run: |
-        docker-compose up -d
     - name: Application tests with Pytest
       run: |
         pytest
