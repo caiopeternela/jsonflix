@@ -1,1 +1,1 @@
-web: gunicorn jsonflix.wsgi
+web: gunicorn core.wsgi
