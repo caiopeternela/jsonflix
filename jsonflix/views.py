@@ -51,7 +51,6 @@ def api(request):
             }
             return HttpResponse(json.dumps(dict, ensure_ascii=False, indent=2), content_type="application/json")
         else:
-            type = type.replace('_', ' ')
             qs = qs.filter(type__icontains=type).order_by('id')
 
     if title:
