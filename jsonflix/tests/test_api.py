@@ -1,6 +1,13 @@
 import pytest
+import requests
 from django.urls import reverse
 from jsonflix.models import Netflix
+
+
+def test_response_time():
+    url = 'https://jsonflix.herokuapp.com/api/v1/all'
+    response = requests.get(url)
+    assert response.elapsed.total_seconds() < 5
 
 
 @pytest.fixture

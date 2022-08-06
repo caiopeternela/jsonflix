@@ -48,6 +48,7 @@ def api(request):
     qs = Netflix.objects.all()
 
     if type:
+        type = type.replace('_', ' ')
         qs = qs.filter(type__icontains=type).order_by('id')
 
     if title:
