@@ -13,6 +13,13 @@ def home(request):
     return render(request, 'jsonflix/home.html')
 
 
+def all(request):
+    qs = Netflix.objects.all()
+    dict = [Netflix.json_dict(content) for content in qs]
+
+    return HttpResponse(json.dumps(dict, ensure_ascii=False, indent=2), content_type="application/json")
+
+
 def api(request):
 
     fields = Netflix._meta.get_fields()
@@ -34,8 +41,7 @@ def api(request):
     cast = request.GET.get("cast")
     country = request.GET.get("country")
     genres = request.GET.get("genres")
-    # start_date = request.GET.get("start_date")
-    # end_date = request.GET.get("end_date")
+    # date_added = request.GET.get("date_added")
     release_year = request.GET.get("release_year")
     description = request.GET.get("description")
     limit = request.GET.get("limit")
@@ -52,17 +58,16 @@ def api(request):
             country = country_code_converter(country)
         qs = qs.filter(country__icontains=country).order_by('id')
 
-    # if start_date and not end_date:
-    #     qs = qs.filter(date_added=start_date).order_by('id')
-
-    # elif start_date and end_date:
-    #     qs = qs.filter(date_added__range=(start_date, end_date)).order_by('date_added')
-
     if release_year:
-        qs = qs.filter(release_year=release_year).order_by('id')
+        release_year = release_year.split(',')
+        if len(release_year) > 1:
+            qs = qs.filter(release_year__gte=release_year[0]).order_by('id')
+            qs = qs.filter(release_year__lte=release_year[1]).order_by('id')
+        else:
+            qs = qs.filter(release_year=release_year).order_by('id')
 
     if cast:
-        cast = cast.split('+')
+        cast = cast.split(',')
         for actor in cast:
             actor = actor.replace('_', ' ')
             qs = qs.filter(cast__icontains=actor).order_by('id')

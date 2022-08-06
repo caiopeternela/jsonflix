@@ -237,6 +237,7 @@ def country_code_converter(country):
         }
 
     for country_code in dict:
+        country = country.upper()
         if country == country_code:
             country = dict[country]
     return country
