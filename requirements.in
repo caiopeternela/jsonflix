@@ -6,3 +6,4 @@ python-dotenv
 django-on-heroku
 responses
 django-extensions
+django-debug-toolbar
