@@ -2,15 +2,10 @@ import json
 import re
 
 from django.http import HttpResponse
-from django.shortcuts import render
 
 from jsonflix.scripts.scripts import country_code_converter
 
 from .models import Netflix
-
-
-def home(request):
-    return render(request, 'jsonflix/home.html')
 
 
 def all(request):
@@ -48,15 +43,25 @@ def api(request):
     qs = Netflix.objects.all()
 
     if type:
-        type = type.replace('_', ' ')
         qs = qs.filter(type__icontains=type).order_by('id')
+        if len(qs) == 0:
+            dict = {
+                'error': "Only 'movie' and 'tv_show' are accepted in the type field"
+            }
+            return HttpResponse(json.dumps(dict, ensure_ascii=False, indent=2), content_type="application/json")
+        else:
+            type = type.replace('_', ' ')
+            qs = qs.filter(type__icontains=type).order_by('id')
 
     if title:
+        title = title.replace('_', ' ')
         qs = qs.filter(title__icontains=title).order_by('id')
 
     if country:
         if len(country) <= 3:
             country = country_code_converter(country)
+        else:
+            country = country.replace('_', ' ').capitalize()
         qs = qs.filter(country__icontains=country).order_by('id')
 
     if release_year:
@@ -96,7 +101,7 @@ def api(request):
             qs = qs[:limit]
         except ValueError:
             dict = {
-                'error': 'Only numerics are accepted in this field'
+                'error': 'Only numerics are accepted in the limit field'
             }
             return HttpResponse(json.dumps(dict, ensure_ascii=False, indent=2), content_type="application/json")
     dict = [Netflix.json_dict(content) for content in qs]
