@@ -44,7 +44,12 @@ django==4.0.5 \
     # via
     #   -r requirements.in
     #   dj-database-url
+    #   django-extensions
     #   django-on-heroku
+django-extensions==3.2.0 \
+    --hash=sha256:4c234a7236e9e41c17d9036f6dae7a3a9b212527105b8a0d24b2459b267825f0 \
+    --hash=sha256:7dc7cd1da50d83b76447a58f5d7e5c8e6cd83f21e9b7e5f97e6b644f4d4e21a6
+    # via -r requirements.in
 django-on-heroku==1.1.2 \
     --hash=sha256:4a72ade056335112cba22eea332552d840b718dd8140d43c2d70bb739875955b \
     --hash=sha256:a41fe83ef7ecb022ca92b2950a61f79fef156e58f4f35fc7fc4ecacdc5225fb8
