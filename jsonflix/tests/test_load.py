@@ -1,9 +1,8 @@
 import gevent
-from locust import HttpUser, task, between
+from locust import HttpUser, between, task
 from locust.env import Environment
-from locust.stats import stats_printer, stats_history
 from locust.log import setup_logging
-
+from locust.stats import stats_history, stats_printer
 
 setup_logging("INFO", None)
 

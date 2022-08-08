@@ -70,7 +70,8 @@ def api(request):
             qs = qs.filter(release_year__gte=release_year[0]).order_by('id')
             qs = qs.filter(release_year__lte=release_year[1]).order_by('id')
         else:
-            qs = qs.filter(release_year=release_year).order_by('id')
+            qs = qs.filter(release_year=release_year[0]).order_by('id')
+            a = 1
 
     if cast:
         cast = cast.split(',')
