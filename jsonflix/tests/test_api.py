@@ -1,5 +1,6 @@
 import pytest
 import requests
+from django.core.exceptions import ValidationError
 from django.urls import reverse
 from jsonflix.models import Netflix
 

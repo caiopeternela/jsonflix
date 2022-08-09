@@ -1,6 +1,7 @@
 import json
 import re
 
+from django.core.exceptions import ValidationError
 from django.http import HttpResponse
 
 from jsonflix.scripts.scripts import country_code_converter
@@ -23,7 +24,7 @@ def api(request):
     params = set(request.GET.keys())
 
     if not params:
-        return HttpResponse(json.dumps({}, ensure_ascii=False, indent=2), content_type="application/json")
+        return HttpResponse(json.dumps({'Tip': 'Insert at least one search term.'}, ensure_ascii=False, indent=2), content_type="application/json")
 
     if not params.issubset(fields_list):
         diff = params.difference(fields_list)
@@ -36,10 +37,11 @@ def api(request):
     cast = request.GET.get("cast")
     country = request.GET.get("country")
     genres = request.GET.get("genres")
-    # date_added = request.GET.get("date_added")
+    date_added = request.GET.get("date_added")
     release_year = request.GET.get("release_year")
     description = request.GET.get("description")
     limit = request.GET.get("limit")
+
     qs = Netflix.objects.all()
 
     if type:
@@ -67,12 +69,25 @@ def api(request):
     if release_year:
         release_year = release_year.split(',')
         if len(release_year) > 1:
-            qs = qs.filter(release_year__gte=release_year[0]).order_by('id')
-            qs = qs.filter(release_year__lte=release_year[1]).order_by('id')
+            qs = qs.filter(release_year__gte=release_year[0]).order_by('release_year')
+            qs = qs.filter(release_year__lte=release_year[1]).order_by('release_year')
         else:
-            qs = qs.filter(release_year=release_year[0]).order_by('id')
-            a = 1
+            qs = qs.filter(release_year=release_year[0]).order_by('release_year')
 
+    if date_added:
+        try:
+            date_added = date_added.split(',')
+            if len(date_added) > 1:
+                qs = qs.filter(date_added__gte=date_added[0]).order_by('date_added')
+                qs = qs.filter(date_added__lte=date_added[1]).order_by('date_added')
+
+            else:
+                qs = qs.filter(date_added=date_added[0]).order_by('date_added')
+        except ValidationError:
+            dict = {
+                'Error': 'Please insert a validdate format. Example: YYYY-MM-DD'
+            }
+            return HttpResponse(json.dumps(dict, ensure_ascii=False, indent=2), status=404, content_type="application/json")
     if cast:
         cast = cast.split(',')
         for actor in cast:
@@ -102,9 +117,9 @@ def api(request):
             qs = qs[:limit]
         except ValueError:
             dict = {
-                'error': 'Only numerics are accepted in the limit field'
+                'Error': 'Only numerics are accepted in the limit field'
             }
-            return HttpResponse(json.dumps(dict, ensure_ascii=False, indent=2), content_type="application/json")
+            return HttpResponse(json.dumps(dict, ensure_ascii=False, indent=2), status=404, content_type="application/json")
     dict = [Netflix.json_dict(content) for content in qs]
 
     return HttpResponse(json.dumps(dict, ensure_ascii=False, indent=2), content_type="application/json")
