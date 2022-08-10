@@ -23,15 +23,6 @@ def api(request):
     fields_list += [field.attname for field in fields]
     params = set(request.GET.keys())
 
-    if not params:
-        return HttpResponse(json.dumps({'Tip': 'Insert at least one search term.'}, ensure_ascii=False, indent=2), content_type="application/json")
-
-    if not params.issubset(fields_list):
-        diff = params.difference(fields_list)
-        dict = {f'Error {index}': f'Field {parameter} does not exist' for parameter, index in zip(
-            diff, range(1, len(diff)+1))}
-        return HttpResponse(json.dumps(dict, ensure_ascii=False, indent=2), content_type="application/json")
-
     type = request.GET.get("type")
     title = request.GET.get("title")
     cast = request.GET.get("cast")
@@ -43,6 +34,15 @@ def api(request):
     limit = request.GET.get("limit")
 
     qs = Netflix.objects.all()
+
+    if not params:
+        return HttpResponse(json.dumps({'Tip': 'Insert at least one search term.'}, ensure_ascii=False, indent=2), content_type="application/json")
+
+    if not params.issubset(fields_list):
+        diff = params.difference(fields_list)
+        dict = {f'Error {index}': f'Field {parameter} does not exist' for parameter, index in zip(
+            diff, range(1, len(diff)+1))}
+        return HttpResponse(json.dumps(dict, ensure_ascii=False, indent=2), content_type="application/json")
 
     if type:
         type = type.replace('_', ' ')
